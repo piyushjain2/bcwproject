@@ -1,0 +1,6 @@
+# Chart.yaml
+
+apiVersion: v2
+name: helloweb3
+description: A Helm chart for deploying a Node.js app
+version: 0.1.0

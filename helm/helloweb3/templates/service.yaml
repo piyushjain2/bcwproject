@@ -1,0 +1,16 @@
+# helloweb3/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "helloweb3.fullname" . }}
+  labels:
+    {{- include "helloweb3.selectorLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 3000
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "helloweb3.selectorLabels" . | nindent 4 }}

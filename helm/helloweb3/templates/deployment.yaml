@@ -1,0 +1,30 @@
+# templates/deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helloweb3.fullname" . }}
+  labels:
+    {{- include "helloweb3.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "helloweb3.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helloweb3.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "helloweb3.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+            - name: API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "helloweb3.fullname" . }}
+                  key: envVariable
+          ports:
+            - containerPort: 3000

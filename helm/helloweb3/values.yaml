@@ -1,0 +1,32 @@
+# values.yaml
+
+image:
+  repository: gcr.io/bwcproject/hello-web3
+  tag: latest
+  pullPolicy: Always
+
+config:
+  envVariable: "981II48MMMER5MZ6ESE6UAYA9XZYK4Z1JZ"
+
+service:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 8080
+
+replicaCount: 2
+
+serviceAccount:
+  create: true
+
+ingress:
+  enabled: false
+
+autoscaling:
+  enabled: false
+
+resources: {}
+
+imagePullSecrets:
+  - name: gcr-secret
