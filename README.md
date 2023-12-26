@@ -15,13 +15,8 @@
 - Helm Chart for the application, public accessibility and metrics exposure on port 3000.
 - Deploy Prometheus in the GKE cluster.
 
-
-
 ### 2. Tasks incomplete
 - Deploy the application to GKE using CI/CD.
-
-### 5. Prometheus and Grafana Deployment
-- Deploy Prometheus in the GKE cluster.
 - Deploy Grafana with external access (IP or DNS) and SSL.
 - Configure Grafana for metrics visualization.
 
@@ -30,18 +25,9 @@
 - Public URLs for the application and Grafana dashboard.
 - Documentation on the setup process and access details.
 
-## Evaluation Criteria
-- Application deployment functionality.
-- Metrics integration in Grafana.
-- Best practices in Terraform, Kubernetes, monitoring, and CI/CD.
-- Documentation quality.
+## Documentation
 
-## Additional Resources
-- Terraform, GitHub CI, and Helm references are provided in this repository to illustrate the basic structure. Feel free to modify these as needed.
+### 1. GCP Setup
+- This was straight forward and done manually 
 
-## Submission Guidelines
-- Ensure all deliverables are committed to your repository.
-- Provide clear documentation in the repository.
-- Submit the repository URL upon completion.
-
-Good luck!
+### 2. Terraform Setup
