@@ -6,7 +6,7 @@ data "google_container_engine_versions" "gke_version" {
 
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
-  location = var.zones[0]
+  location = var.region
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
@@ -20,7 +20,7 @@ resource "google_container_cluster" "primary" {
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
   name     = google_container_cluster.primary.name
-  location = var.zones[0]
+  location = var.region
   cluster  = google_container_cluster.primary.name
 
   version    = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
