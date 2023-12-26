@@ -6,7 +6,7 @@ image:
   pullPolicy: Always
 
 config:
-  envVariable: "981II48MMMER5MZ6ESE6UAYA9XZYK4Z1JZ"
+  envVariable: "<<API_KEY>>"
 
 service:
   type: LoadBalancer
