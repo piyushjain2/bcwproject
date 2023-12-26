@@ -1,4 +1,4 @@
-name: Build and Push to GCR
+name: Deploy to Google Cloud
 
 on:
   push:
@@ -6,31 +6,28 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Google Cloud SDK
-      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '275.0.0'
-        service_account_key: ${{ secrets.GCLOUD_KEY }}
-        export_default_credentials: true
+      - name: Set up Google Cloud SDK
+        run: |
+          curl -o google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-372.0.0-linux-x86_64.tar.gz
+          tar -xf google-cloud-sdk.tar.gz
+          ./google-cloud-sdk/install.sh --quiet
+          echo "${{ secrets.GCLOUD_KEY }}" > /tmp/gcloud.json
+          ./google-cloud-sdk/bin/gcloud auth activate-service-account --key-file=/tmp/gcloud.json
+          ./google-cloud-sdk/bin/gcloud config set project ${ secrets.GCP_PROJECT_ID }
 
-    - name: Debug Google Cloud SDK
-      run: |
-        gcloud auth list
-        gcloud config list
-        gcloud auth print-access-token
+      - name: Build Docker image
+        run: |
+          docker build -t hello-web3 .
 
-    - name: Configure Docker authentication
-      run: |
-        gcloud auth configure-docker
-
-    - name: Build and push Docker image
-      run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/your-nodejs-app:${{ github.sha }} .
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/your-nodejs-app:${{ github.sha }}
+      - name: Configure Docker and push image
+        run: |
+          ./google-cloud-sdk/bin/gcloud auth configure-docker
+          docker tag nodejs-sample-image gcr.io/${ secrets.GCP_PROJECT_ID }/hello-web3
+          docker push gcr.io/${ secrets.GCP_PROJECT_ID }/hello-web3
